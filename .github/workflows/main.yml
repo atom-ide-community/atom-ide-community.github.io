@@ -1,0 +1,73 @@
+name: Build and Deploy
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  Build:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        node:
+          - 16
+        pnpm:
+          - 7
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Commit lint ✨
+        uses: wagoid/commitlint-github-action@v5
+
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.pnpm-store
+            D:\.pnpm-store
+            ~/.local/share/pnpm/store/
+            ~/AppData/Local/pnpm/store/
+          key: "cache-OS:${{ matrix.os }}-Node:${{ matrix.node }}-${{ matrix.pnpm }}-${{ hashFiles('./.npmrc') }}-${{ hashFiles('./package.json') }}"
+          restore-keys: |
+            "cache-OS:${{ matrix.os }}-Node:${{ matrix.node }}-${{ matrix.pnpm }}-"
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2.2.2
+        with:
+          version: ${{ matrix.pnpm }}
+
+      - name: Install and Build 🔧
+        run: |
+          pnpm install
+          pnpm run build
+
+      - name: Format ✨
+        run: pnpm test.format
+
+      - name: Lint ✨
+        run: pnpm test.lint
+
+      - name: Deploy 🚀
+        if: github.ref == 'refs/heads/master' && github.event.repository.fork == false
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: _site # The folder the action should deploy.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,73 @@
+{
+  "name": "atom-community.github.io",
+  "version": "1.0.0",
+  "description": "Atom Community website powered by [rocket](https://rocket.modern-web.dev).",
+  "homepage": "https://github.com/atom-community/atom-community.github.io#readme",
+  "bugs": {
+    "url": "https://github.com/atom-community/atom-community.github.io/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atom-community/atom-community.github.io.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "exports": {
+    "./components/*": {
+      "esbuild": "./components/*.ts",
+      "default": "./components/*.js"
+    }
+  },
+  "main": "rocket.config.js",
+  "scripts": {
+    "build": "npm run clean && npm run tsc && npm run typedoc && rocket build",
+    "clean": "shx rm -rf ./_site* ./docs/_merged_*",
+    "dev": "npm run typedoc && rocket start",
+    "format": "prettier --write .",
+    "lint": "eslint . --fix",
+    "start": "servor _site",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test.format": "prettier . --check",
+    "test.lint": "eslint .",
+    "tsc": "tsc",
+    "typedoc": "typedoc --json docs/_data/api/api.json --entryPoints api.ts"
+  },
+  "prettier": "prettier-config-atomic",
+  "dependencies": {
+    "atom-ide-base": "^3.3.0",
+    "lit-element": "^3.2.2"
+  },
+  "devDependencies": {
+    "@rocket/blog": "^0.4.0",
+    "@rocket/cli": "^0.6.3",
+    "@rocket/core": "^0.1.2",
+    "@rocket/launch": "^0.4.2",
+    "@rocket/search": "^0.6.0",
+    "@types/atom": "^1.40.11",
+    "@types/markdown-it": "^12.2.3",
+    "@types/prismjs": "^1.26.0",
+    "@types/react": "^18.0.15",
+    "@web/dev-server-esbuild": "^0.3.1",
+    "eleventy-plugin-add-web-component-definitions": "^2.1.2",
+    "eleventy-plugin-helmet": "^0.2.2",
+    "eslint": "^8.20.0",
+    "eslint-config-atomic": "^1.18.1",
+    "markdown-it": "^13.0.1",
+    "markdown-it-prism": "^2.2.4",
+    "plugins-manager": "^0.2.4",
+    "prettier-config-atomic": "^3.0.10",
+    "rollup-plugin-esbuild": "^4.9.1",
+    "servor": "^4.0.2",
+    "shx": "^0.3.4",
+    "typedoc": "^0.23.9",
+    "typedoc-plugin-markdown": "^3.13.4",
+    "typescript": "^4.7.4"
+  },
+  "keywords": [],
+  "pnpm": {
+    "overrides": {
+      "recursive-copy": "2.0.14"
+    }
+  }
+}

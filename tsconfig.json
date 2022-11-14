@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noFallthroughCasesInSwitch": true,
+    "declaration": false,
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": true,
+    "incremental": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "preserveSymlinks": true,
+    "removeComments": true,
+    "jsx": "react",
+    "lib": ["ES2018", "dom"],
+    "target": "ES2018",
+    "allowJs": false,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "importHelpers": false
+  }
+}
